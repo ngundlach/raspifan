@@ -1,0 +1,13 @@
+[Unit]
+Description=Fan Control
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/raspifan
+User=fancontrol
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

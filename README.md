@@ -51,9 +51,13 @@ of the fan:
                                       |
                                      Fan (-)
                                       |
-                                  Collector (NPN)
-                                   Emitter ──── GND
- GPIO Pin (default: 18) ────[R1]─── Base
+                                  ┌─────────────┐
+                                  |Collector    |
+ GPIO Pin (default: 18) ────[R1]──| Base   (NPN)|
+                                  |Emitter      |
+                                  └─────────────┘
+                                      |
+                                     GND
 ```
 
 - The fan is powered from the Pi's 5V rail.

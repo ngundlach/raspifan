@@ -13,6 +13,16 @@ and fan state via a REST API with server-sent event (SSE) streaming.
 - Server-sent events endpoint for real-time streaming updates
 - Graceful shutdown on `SIGINT`/`SIGTERM`
 
+## Table of Contents
+
+- [Building](#building)
+- [Wiring](#wiring)
+- [Usage](#usage)
+- [Temperature Providers](#temperature-providers)
+- [Web API](#web-api)
+- [Running as a systemd Service](#running-as-a-systemd-service)
+- [Project Structure](#project-structure)
+
 ## Building
 
 ### Requirements
@@ -130,27 +140,6 @@ data: {"temp":51.3,"fan":"on"}
 
 Returns `200 OK`. Useful for health probes.
 
-## Project Structure
-
-```
-├── main (raspifan.go)     # Entry point, app wiring, run loop
-├── config/
-│   ├── configcreator.go   # Config struct and interface
-│   └── cliconfigcreator.go # CLI flag parsing
-├── fan/
-│   ├── fancontroller.go   # FanController interface and FanState type
-│   └── defaultfancontroller.go # GPIO-backed implementation via go-rpio
-├── temps/
-│   ├── tempreader.go      # TempReader interface and provider constants
-│   ├── sysfstemp.go       # sysfs temperature provider
-│   └── vctemp.go          # vcgencmd temperature provider
-├── sensor/
-│   └── sensordata.go      # Thread-safe storage for latest temp + fan state
-└── web/
-    ├── restservice.go      # HTTP server, handlers, SSE streaming
-    └── sensormodel.go     # JSON response model
-```
-
 ## Running as a systemd Service
 
 A `fan.service` unit file is included for running raspifan as a background service that starts on boot and restarts automatically on failure.
@@ -195,6 +184,27 @@ Then reload and restart:
 
 ```bash
 sudo systemctl daemon-reload && sudo systemctl restart fan.service
+```
+
+## Project Structure
+
+```
+├── main (raspifan.go)     # Entry point, app wiring, run loop
+├── config/
+│   ├── configcreator.go   # Config struct and interface
+│   └── cliconfigcreator.go # CLI flag parsing
+├── fan/
+│   ├── fancontroller.go   # FanController interface and FanState type
+│   └── defaultfancontroller.go # GPIO-backed implementation via go-rpio
+├── temps/
+│   ├── tempreader.go      # TempReader interface and provider constants
+│   ├── sysfstemp.go       # sysfs temperature provider
+│   └── vctemp.go          # vcgencmd temperature provider
+├── sensor/
+│   └── sensordata.go      # Thread-safe storage for latest temp + fan state
+└── web/
+    ├── restservice.go      # HTTP server, handlers, SSE streaming
+    └── sensormodel.go     # JSON response model
 ```
 
 ## License

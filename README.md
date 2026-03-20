@@ -5,6 +5,9 @@ temperature and automatically switches a GPIO-controlled fan on or off based on
 configurable thresholds. An optional web server exposes the current temperature
 and fan state via a REST API with server-sent event (SSE) streaming.
 
+**raspifan currently does not support Raspberry Pi 5 or newer!** It was tested
+on a Raspberry Pi 3B+.
+
 ## Features
 
 - Automatic fan control based on configurable temperature thresholds
@@ -30,7 +33,7 @@ and fan state via a REST API with server-sent event (SSE) streaming.
 - Go 1.21+
 - [`go-rpio`](https://github.com/stianeikeland/go-rpio) for GPIO control
 
-Cross-compile for ARM64 Linux from any machine:
+Cross-compile for ARM64 Linux:
 
 ```bash
 # Development build
@@ -56,19 +59,7 @@ Instead, use a transistor to switch the fan using the Pi's power supply. The
 recommended approach is an NPN transistor switching the negative (ground) side
 of the fan:
 
-```INI
-5V Pin ───────────────────────────── Fan (+)
-                                      |
-                                     Fan (-)
-                                      |
-                                  ┌─────────────┐
-                                  |Collector    |
- GPIO Pin (default: 18) ────[R1]──| Base   (NPN)|
-                                  |Emitter      |
-                                  └─────────────┘
-                                      |
-                                     GND
-```
+![Diagram](./assets/raspifan.png)
 
 - The fan is powered from the Pi's 5V rail.
 - The GPIO pin drives the base of the NPN transistor through a current-limiting
@@ -76,7 +67,7 @@ of the fan:
 - When the GPIO pin goes high, the transistor conducts and completes the fan's
   ground path, turning it on
 
-**Adjust the parts to your needs!**
+**You might want to add a flyback diode depending on your fan. Adjust the parts to your needs!**
 
 ## Usage
 
@@ -101,10 +92,10 @@ raspifan [flags]
 
 ```bash
 # Run with default settings
-sudo ./raspifan
+./raspifan
 
 # Custom thresholds, vcgencmd provider, and web server enabled
-sudo ./raspifan -tempprovider vc -turnontemp 55 -turnofftemp 45 -webserver -port 8080
+./raspifan -tempprovider vc -turnontemp 55 -turnofftemp 45 -webserver -port 8080
 ```
 
 > **Note:** GPIO access typically requires appropriate permissions. Some Raspberry Pi Linux Distros provide a `GPIO` group for that.

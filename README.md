@@ -52,7 +52,7 @@ The binary is output to `out/`.
 > any other equipment resulting from following this guide.
 
 > ⚠️ **Never connect a fan directly to a GPIO pin.** GPIO pins on the
-> Raspberry Pi can only source a few milliamps — nowhere near enough to drive
+> Raspberry Pi can only source a few milliamps - nowhere near enough to drive
 > a fan motor, and attempting to do so risks permanently damaging your Pi.
 
 Instead, use a transistor to switch the fan using the Pi's power supply. The
@@ -102,9 +102,9 @@ raspifan [flags]
 
 ## Temperature Providers
 
-**`sysfs`** (default) — Reads temperature from the Linux thermal sysfs interface. Works on most Linux systems.
+**`sysfs`** (default) - Reads temperature from the Linux thermal sysfs interface. Works on most Linux systems.
 
-**`vc`** — Uses the Raspberry Pi `vcgencmd measure_temp` command. Requires `/usr/bin/vcgencmd` to be available on the device and also the appropriate permissions. There is typically a `video` group provided.
+**`vc`** - Uses the Raspberry Pi `vcgencmd measure_temp` command. Requires `/usr/bin/vcgencmd` to be available on the device and also the appropriate permissions. There is typically a `video` group provided.
 
 ## Web API
 
@@ -180,22 +180,22 @@ sudo systemctl daemon-reload && sudo systemctl restart fan.service
 ## Project Structure
 
 ```
-├── main (raspifan.go)     # Entry point, app wiring, run loop
+├── main (raspifan.go)          # Entry point, app wiring, run loop
 ├── config/
-│   ├── configcreator.go   # Config struct and interface
-│   └── cliconfigcreator.go # CLI flag parsing
+│   ├── configcreator.go        # Config struct and interface
+│   └── cliconfigcreator.go     # CLI flag parsing
 ├── fan/
-│   ├── fancontroller.go   # FanController interface and FanState type
+│   ├── fancontroller.go        # FanController interface and FanState type
 │   └── defaultfancontroller.go # GPIO-backed implementation via go-rpio
 ├── temps/
-│   ├── tempreader.go      # TempReader interface and provider constants
-│   ├── sysfstemp.go       # sysfs temperature provider
-│   └── vctemp.go          # vcgencmd temperature provider
+│   ├── tempreader.go           # TempReader interface and provider constants
+│   ├── sysfstemp.go            # sysfs temperature provider
+│   └── vctemp.go               # vcgencmd temperature provider
 ├── sensor/
-│   └── sensordata.go      # Thread-safe storage for latest temp + fan state
+│   └── sensordata.go           # Thread-safe storage for latest temp + fan state
 └── web/
-    ├── restservice.go      # HTTP server, handlers, SSE streaming
-    └── sensormodel.go     # JSON response model
+    ├── restservice.go          # HTTP server, handlers, SSE streaming
+    └── sensormodel.go          # JSON response model
 ```
 
 ## License
